@@ -2,7 +2,7 @@
   "name": "afyalink",
   "version": "1.0.0",
   "main": "server.js",
-  "type":"module",
+  "type": "module",
   "directories": {
     "test": "tests"
   },
@@ -23,6 +23,9 @@
   "homepage": "https://github.com/Ezra-Kiprotich-Langat/afyalink#readme",
   "description": "",
   "dependencies": {
-    "express": "^5.1.0"
+    "bcryptjs": "^3.0.2",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "mysql2": "^3.14.3"
   }
 }
