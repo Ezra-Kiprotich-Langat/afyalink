@@ -13,7 +13,7 @@ const userCreateController = async(req,res)=>{
         }
         const hashed_password = await bcrypt.hash(password, 10)
         const userId = await createUser({name, email, phone_number, location, password:hashed_password})
-        return res.status(201).json({message: "User successfully registered", userId: userId})
+        res.status(201).json({message: "User successfully registered", userId: userId})
         const recipient = email
         const subject = `Afyalink Registration`
         const body = `
