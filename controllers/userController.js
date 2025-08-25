@@ -1,6 +1,9 @@
 import {createUser, findUserByEmail} from "../models/userModel.js"
 import bcrypt from "bcryptjs"
+import jwt from "jsonwebtoken"
 import sendEmail from "../utils/sendEmail.js"
+import dotenv from "dotenv"
+dotenv.config()
 const userCreateController = async(req,res)=>{
     const{name, email, phone_number, location, password} = req.body
     try{
@@ -26,4 +29,21 @@ const userCreateController = async(req,res)=>{
         return res.status(500).json({message: "Error occurred while creating the user"})
     }
 }
-export default userCreateController;
+export const loginController = async(req,res)=>{
+    const{email, password} = req.body
+    if(!email || !password){
+        return res.status(400).json({message: "Email and password are required"})
+    }
+    const existingUser = await findUserByEmail(email)
+    if(!existingUser){
+        res.status(401).json({message: "Invalid credentials"})
+    }
+    const isMatch = await bcrypt.compare(password, existingUser.hashed_password)
+    if(!isMatch){
+        return res.status(401).json({message: "Invalid credentials"})
+    }
+    const token = jwt.sign({id: existingUser.id, email: existingUser.email}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_EXPIRES_IN})
+    res.status(200).json({message: "Login Successfully", token})
+
+}
+export default userCreateController
